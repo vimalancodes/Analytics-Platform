@@ -1,0 +1,12 @@
+[
+  {"record_id": "J001", "customer_id": "C011", "product_id": "P001", "quantity": 3, "unit_price": 150.00, "total_amount": 450.00, "transaction_date": "2024-02-01", "region": "North", "category": "Electronics"},
+  {"record_id": "J002", "customer_id": "C012", "product_id": "P002", "quantity": 2, "unit_price": 250.00, "total_amount": 500.00, "transaction_date": "2024-02-02", "region": "South", "category": "Clothing"},
+  {"record_id": "J003", "customer_id": "C013", "product_id": "P003", "quantity": 4, "unit_price": 20.00, "total_amount": 80.00, "transaction_date": "2024-02-03", "region": "East", "category": "Grocery"},
+  {"record_id": "J004", "customer_id": "C014", "product_id": "P004", "quantity": 1, "unit_price": 80.00, "total_amount": 80.00, "transaction_date": "2024-02-04", "region": "West", "category": "Electronics"},
+  {"record_id": "J005", "customer_id": "C015", "product_id": "P005", "quantity": 5, "unit_price": 60.00, "total_amount": 300.00, "transaction_date": "2024-02-05", "region": "North", "category": "Clothing"},
+  {"record_id": "J006", "customer_id": null, "product_id": "P001", "quantity": 2, "unit_price": 150.00, "total_amount": 300.00, "transaction_date": "2024-02-06", "region": "South", "category": "Electronics"},
+  {"record_id": "J007", "customer_id": "C017", "product_id": "P002", "quantity": -3, "unit_price": 250.00, "total_amount": -750.00, "transaction_date": "2024-02-07", "region": "East", "category": "Clothing"},
+  {"record_id": "J008", "customer_id": "C018", "product_id": "P003", "quantity": 2, "unit_price": 20.00, "total_amount": 40.00, "transaction_date": "2024-02-08", "region": "West", "category": "Grocery"},
+  {"record_id": "J009", "customer_id": "C019", "product_id": "P004", "quantity": 200, "unit_price": 80.00, "total_amount": 16000.00, "transaction_date": "2024-02-09", "region": "North", "category": "Electronics"},
+  {"record_id": "J010", "customer_id": "C020", "product_id": "P005", "quantity": 3, "unit_price": 60.00, "total_amount": 180.00, "transaction_date": "2024-02-10", "region": "South", "category": "Clothing"}
+]

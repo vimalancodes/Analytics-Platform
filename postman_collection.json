@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "Analytics Platform API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Summary Metrics",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/summary" }
+    },
+    {
+      "name": "Get Anomalies",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/anomalies" }
+    },
+    {
+      "name": "Get Invalid Records",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/invalid-records" }
+    },
+    {
+      "name": "Get AI Insights",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/insights" }
+    },
+    {
+      "name": "Get Valid Records",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/valid-records" }
+    },
+    {
+      "name": "Get Revenue By Region",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/revenue-by-region" }
+    },
+    {
+      "name": "Get Revenue By Category",
+      "request": { "method": "GET", "url": "http://localhost:5216/api/analytics/revenue-by-category" }
+    },
+    {
+      "name": "Process Data",
+      "request": { "method": "POST", "url": "http://localhost:5216/api/analytics/process" }
+    }
+  ]
+}

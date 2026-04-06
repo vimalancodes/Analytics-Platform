@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: analytics_db
+    environment:
+      POSTGRES_USER: analytics_user
+      POSTGRES_PASSWORD: analytics_pass
+      POSTGRES_DB: analytics_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql:/docker-entrypoint-initdb.d
+    networks:
+      - analytics_net
+
+  python-pipeline:
+    build: ./python-pipeline
+    container_name: analytics_pipeline
+    depends_on:
+      - postgres
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: analytics_db
+      DB_USER: analytics_user
+      DB_PASSWORD: analytics_pass
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-mock}
+    volumes:
+      - ./data:/app/data
+    networks:
+      - analytics_net
+
+  dotnet-api:
+    build: ./dotnet-api
+    container_name: analytics_api
+    depends_on:
+      - postgres
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=analytics_db;Username=analytics_user;Password=analytics_pass"
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-mock}
+    ports:
+      - "5000:80"
+    networks:
+      - analytics_net
+
+volumes:
+  postgres_data:
+
+networks:
+  analytics_net:
+    driver: bridge
