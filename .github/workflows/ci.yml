@@ -1,0 +1,62 @@
+name: Analytics Platform CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  python-pipeline:
+    name: Python Pipeline Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          cd python-pipeline
+          pip install -r requirements.txt
+
+      - name: Run pipeline syntax check
+        run: |
+          cd python-pipeline
+          python -m py_compile main.py
+          python -m py_compile db.py
+          python -m py_compile ingestion/ingestor.py
+          python -m py_compile validation/validator.py
+          python -m py_compile anomaly/detector.py
+          python -m py_compile insights/ai_insights.py
+          echo "✅ All Python files compiled successfully"
+
+  dotnet-api:
+    name: .NET API Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: |
+          cd dotnet-api/AnalyticsPlatform
+          dotnet restore
+
+      - name: Build
+        run: |
+          cd dotnet-api/AnalyticsPlatform
+          dotnet build --no-restore
+
+      - name: Publish
+        run: |
+          cd dotnet-api/AnalyticsPlatform
+          dotnet publish -c Release -o out
+          echo "✅ .NET API built successfully"

@@ -1,0 +1,56 @@
+{
+  "summary_endpoint": {
+    "url": "GET /api/analytics/summary",
+    "response": {
+      "id": 1,
+      "metricDate": "2024-01-29",
+      "totalRecords": 35,
+      "validRecords": 28,
+      "invalidRecords": 7,
+      "anomalyCount": 4,
+      "totalRevenue": 35680.00,
+      "avgOrderValue": 1274.29,
+      "topRegion": "North",
+      "topCategory": "Electronics",
+      "computedAt": "2026-04-05T17:59:51"
+    }
+  },
+  "anomalies_endpoint": {
+    "url": "GET /api/analytics/anomalies",
+    "response": {
+      "total": 4,
+      "data": [
+        {
+          "recordId": "J009",
+          "customerId": "C019",
+          "totalAmount": 16000.00,
+          "anomalyScore": 3.1,
+          "anomalyType": "high_value",
+          "detectionMethod": "zscore+iqr"
+        },
+        {
+          "recordId": "R021",
+          "customerId": "C001",
+          "totalAmount": 7500.00,
+          "anomalyScore": 2.8,
+          "anomalyType": "high_value",
+          "detectionMethod": "zscore+iqr"
+        }
+      ]
+    }
+  },
+  "insights_endpoint": {
+    "url": "GET /api/analytics/insights",
+    "response": {
+      "total": 1,
+      "data": [
+        {
+          "insightType": "pipeline_summary",
+          "insightText": "1. Data Quality: 20% of records failed validation. Recommend reviewing data sources.\n2. Revenue: $35,680 total with 4 anomalous transactions flagged for review.\n3. Growth: North region and Electronics category lead in revenue.",
+          "modelUsed": "mock",
+          "generatedAt": "2026-04-05T17:59:51"
+        }
+      ]
+    }
+  }
+}
