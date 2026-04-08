@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15
@@ -15,12 +13,18 @@ services:
       - ./sql:/docker-entrypoint-initdb.d
     networks:
       - analytics_net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U analytics_user -d analytics_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   python-pipeline:
     build: ./python-pipeline
     container_name: analytics_pipeline
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       DB_HOST: postgres
       DB_PORT: 5432
@@ -28,19 +32,21 @@ services:
       DB_USER: analytics_user
       DB_PASSWORD: analytics_pass
       OPENAI_API_KEY: ${OPENAI_API_KEY:-mock}
+      DATA_DIR: /app/data
     volumes:
       - ./data:/app/data
     networks:
       - analytics_net
 
   dotnet-api:
-    build: ./dotnet-api
+    build: ./dotnet-api/AnalyticsPlatform
     container_name: analytics_api
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     environment:
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=analytics_db;Username=analytics_user;Password=analytics_pass"
-      OPENAI_API_KEY: ${OPENAI_API_KEY:-mock}
+      ASPNETCORE_URLS: http://+:80
     ports:
       - "5000:80"
     networks:

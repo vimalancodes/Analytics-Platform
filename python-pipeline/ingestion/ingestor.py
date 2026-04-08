@@ -26,9 +26,9 @@ def ingest_all(data_dir: str) -> pd.DataFrame:
     frames = []
     for file in os.listdir(data_dir):
         filepath = os.path.join(data_dir, file)
-        if file.endswith(".csv"):
+        if file.endswith(".csv") and not file.startswith("sample"):
             frames.append(ingest_csv(filepath))
-        elif file.endswith(".json"):
+        elif file.endswith(".json") and not file.startswith("sample") and not file.startswith("chart"):
             frames.append(ingest_json(filepath))
     combined = pd.concat(frames, ignore_index=True)
     logger.info(f"Total records ingested: {len(combined)}")
