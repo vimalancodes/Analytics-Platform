@@ -11,27 +11,38 @@ def detect_anomalies(df: pd.DataFrame) -> pd.DataFrame:
     if df.empty or "total_amount" not in df.columns:
         return pd.DataFrame()
 
+    # Reset index to avoid index mismatch issues
+    df = df.reset_index(drop=True)
+
     amounts = pd.to_numeric(df["total_amount"], errors="coerce").dropna()
+
+    if len(amounts) < 3:
+        return pd.DataFrame()
 
     # Z-Score method
     z_scores = np.abs(stats.zscore(amounts))
-    z_anomaly_idx = amounts.index[z_scores > 2.5]
+    z_anomaly_idx = amounts.index[z_scores > 2.5].tolist()
 
     # IQR method
     Q1 = amounts.quantile(0.25)
     Q3 = amounts.quantile(0.75)
     IQR = Q3 - Q1
-    lower = Q1 - 1.5 * IQR
     upper = Q3 + 1.5 * IQR
-    iqr_anomaly_idx = amounts.index[(amounts < lower) | (amounts > upper)]
+    lower = Q1 - 1.5 * IQR
+    iqr_anomaly_idx = amounts.index[
+        (amounts < lower) | (amounts > upper)
+    ].tolist()
 
     # Combine both
-    all_anomaly_idx = set(z_anomaly_idx).union(set(iqr_anomaly_idx))
+    all_anomaly_idx = list(set(z_anomaly_idx + iqr_anomaly_idx))
+
+    # Build z_score lookup
+    z_score_lookup = pd.Series(z_scores.values, index=amounts.index)
 
     for idx in all_anomaly_idx:
         row = df.loc[idx]
-        amount = float(row["total_amount"])
-        z = float(np.abs(stats.zscore(amounts))[amounts.index.get_loc(idx)])
+        amount = float(pd.to_numeric(row["total_amount"], errors="coerce"))
+        z = float(z_score_lookup.loc[idx])
 
         method = []
         if idx in z_anomaly_idx:
